@@ -1,0 +1,93 @@
+{% extends 'base.html' %}
+
+{% block css %}
+    <style>
+        .radio{
+            position: absolute
+        }
+    </style>
+{% endblock css %}
+    
+{% block main %}
+    <div class="col-sm mt-5">
+        <div class="row">
+            {% if res %}
+            {%for obj in res%}
+            <div class="card bg-dark border-bottom-info shadow  py-2 mr-3 mb-3" style="width: 18rem;">
+                <img src="{{obj.favicon}}" style="height:10em" class="card-img-top" alt="...">
+                <div class="card-body">
+                  <h5 class="card-title text-light">{{obj.name}}</h5>
+                  <p class="card-text"></p>
+                  <p class="card-text"></p>
+                 
+                  <a href="" class="radio_url" data-value = "{{obj.url}}"> <i style="font-size: 2.5em;" class="material-icons text-success">play_circle_filled</i> </a>
+                </div>
+              </div> 
+            {%endfor%}
+            {% endif %}
+        </div>
+    </div>
+    <div class="col-xl text-center">
+        <audio id="radio" style="width: 100%;"  controls >
+            <source id="audio-source"
+               type="audio/mpeg">
+        </audio>
+    </div>
+
+{% endblock main %}
+
+{% block js %}
+<script>
+    
+//     $('.radio_url').click(function() {
+//     var isClicked = $(this).data('clicked');
+//     if (isClicked) {
+//         // it's the first time we are clicking on this element
+//         $(this).data('clicked', true);
+//     } else {
+//         // the user has already clicked on this element
+//     }
+// });
+   
+
+
+    radio_url = document.getElementsByClassName('radio_url')
+  
+    for (let item = 0;item <= radio_url.length; item ++){
+        if (radio_url === true){
+            radio_url.item(item).onclick = console.log('teste')
+        }
+        
+        }
+    
+    // radio_url.onclick =  function(event){
+    //     event.preventDefault()
+
+    //     var element = event.target
+    //     var radio = document.getElementById('radio')
+        
+
+    //     var radio_source = document.getElementById('audio-source')
+    //     radio_source.src = element.getAttribute('data-value')
+        
+    //     radio.volume = 0.02
+    //     radio.load()
+    //     radio.play()
+    // }
+        
+    
+
+
+
+
+    
+    
+    
+    
+   
+
+
+</script>
+{% endblock js %}
+    
+    

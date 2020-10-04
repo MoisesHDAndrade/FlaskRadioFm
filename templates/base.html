@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<meta name="Description" content="Enter your description here"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.0-alpha1/css/bootstrap.min.css">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+<link rel="stylesheet" href="{{url_for('static', filename='dist/lity.css')}}">
+<link rel="stylesheet"  media="all" href="{{url_for('static', filename='assets/prism.css')}}">
+<script src="https://vjs.zencdn.net/7.7.5/video.js"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+{% block css %}{% endblock css %}   
+<title>FlaskRadioFM </title>
+</head>
+<body style="background-color: black;">
+    <nav class="navbar navbar-expand-lg navbar-light bg-success">
+        <div class="container-fluid">
+          <a class="navbar-brand text-light" href="#">FlaskRadioFM <i class="material-icons">radio</i> </a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto mb-2 mb-lg-0">
+              <!-- <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="#">Home</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">Link</a>
+              </li> -->
+              
+            </ul>
+            <form class="d-flex" method="post">
+              <input class="form-control mr-2" name="search" type="search" placeholder="Search" aria-label="Search">
+              <button class="btn btn-outline-light" type="submit">Search</button>
+            </form>
+          </div>
+        </div>
+      </nav>
+<div class="container">{% block main %}{% endblock main %}</div>
+{% block js %}{% endblock js %}
+
+
+<script src="https://unpkg.com/videojs-flash/dist/videojs-flash.js"></script>
+<script src="https://unpkg.com/videojs-contrib-hls/dist/videojs-contrib-hls.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.1/umd/popper.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.0-alpha1/js/bootstrap.min.js"></script>
+</body>
+</html>
