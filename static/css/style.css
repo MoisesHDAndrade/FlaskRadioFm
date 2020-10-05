@@ -1,7 +1,44 @@
+.radio-url-icon{
+    display: inline-flex;
+    vertical-align: middle;
+    vertical-align: -12px
+}
+.radio-play{
+    padding: 0px;
+}
+.radio_class{
+    
+    
+}
+.radio_class a{
+    
+    border-top-right-radius: 15px;
+    border-bottom-right-radius: 15px;
+    border-top-left-radius: 15px;
+    border-bottom-left-radius: 15px;
+}
+.radio_class i, span {
+    cursor: pointer;
+    z-index: -1;
+}
+.radio_class span{
+    font-size:1.1em;
+    line-height:25px;
+    padding: 5px 10px 3px 20px;
+    margin-left: -15px;
+    border-top-right-radius: 15px;
+    border-bottom-right-radius: 15px;
+    border-top-left-radius: 15px;
+    border-bottom-left-radius: 15px;
+    
+}
 .footer{
     position: fixed;
     left: 0;
     bottom: 0;
     width: 100%;
     text-align: center;
+}
+.radio{
+    position: absolute
 }

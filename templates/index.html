@@ -1,13 +1,4 @@
 {% extends 'base.html' %}
-
-{% block css %}
-    <style>
-        .radio{
-            position: absolute
-        }
-    </style>
-{% endblock css %}
-    
 {% block main %}
     <div class="col-sm mt-5 mb-5">
         <div class="row ">
@@ -19,8 +10,11 @@
                   <h5 class="card-title text-light">{{obj.name}}</h5>
                   <p class="card-text"></p>
                   <p class="card-text"></p>
-                 
-                  <a  class=""  id="radio_url{{loop.index}}" onclick=radio(this.id) data-value = "{{obj.url_resolved}}"> <i style="font-size: 2.5em;" class="material-icons text-success">play_circle_filled</i> </a>
+                </div>
+                <div class="card-footer">
+                    <a class="radio_class text-decoration-none  "  id="radio_url{{loop.index}}" onclick=radio(this.id) data-value = "{{obj.url_resolved}}">
+                        <!-- <i style="font-size: 2em; position: absolute;z-index: 2;" class="material-icons radio-url-icon text-success ">play_circle_filled</i>   --><span class="bg-success text-dark radio-span"> Play</span>
+                    </a>
                 </div>
               </div> 
             {%endfor%}
@@ -33,24 +27,6 @@
                type="audio/mpeg">
         </audio>
     </div>
-
 {% endblock main %}
-
-{% block js %}
-<script>
-    function radio(element){
-        
-        var radio_url = document.getElementById(String(element))
-        var radio = document.getElementById('radio')
-        var radio_source = document.getElementById('audio-source')
-        radio_source.src = radio_url.getAttribute('data-value')
-        
-        radio.volume = 0.02
-        radio.pause()
-        radio.load()
-        radio.play()  
-    }
-</script>
-{% endblock js %}
     
     
