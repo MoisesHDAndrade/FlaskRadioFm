@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="X-UA-Compatible" content="ie=edge">
 <meta name="FlaskRadioFM" content="Simple Radio Player Online"/>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.0-alpha1/css/bootstrap.min.css">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" >
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 <link rel="stylesheet"  media="all" href="{{url_for('static', filename='css/style.css')}}">
 {% block css %}{% endblock css %}   
@@ -13,10 +13,9 @@
 </head>
 <body style="background-color: black;">
 {% block nav %}{% include 'nav.html' %}{% endblock nav %}  
-<div class="container">{% block main %}{% endblock main %}</div>
+<div class="container-fluid">{% block main %}{% endblock main %}</div>
 {% block js %}{% endblock js %}
 <script src="{{url_for('static', filename='js/main.js')}}"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.1/umd/popper.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.0-alpha1/js/bootstrap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

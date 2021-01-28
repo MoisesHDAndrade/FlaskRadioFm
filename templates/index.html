@@ -1,22 +1,24 @@
 {% extends 'base.html' %}
 {% block main %}
-    <div class="col-sm mt-5 mb-5">
-        <div class="row ">
+    <div class="col-12">
+        <div class="row justify-content-center">
             {% if res %}
             {%for obj in res%}
-            <div class="card bg-dark border-bottom-info shadow  py-2 mr-3 mb-3" style="width: 18rem;">
-                <img src="{{obj.favicon}}" style="height:10em" class="card-img-top" alt="...">
-                <div class="card-body">
-                  <h5 class="card-title text-light">{{obj.name}}</h5>
-                  <p class="card-text"></p>
-                  <p class="card-text"></p>
-                </div>
-                <div class="card-footer">
-                    <a class="radio_class text-decoration-none  "  id="radio_url{{loop.index}}" onclick=radio(this.id) data-value = "{{obj.url_resolved}}">
-                        <!-- <i style="font-size: 2em; position: absolute;z-index: 2;" class="material-icons radio-url-icon text-success ">play_circle_filled</i>   --><span class="bg-success text-dark radio-span"> Play</span>
-                    </a>
-                </div>
-              </div> 
+            <div class="col-md-2 col-lg-3 text-center mb-5">
+                <div class="card bg-dark border-bottom-info shadow  py-2 mr-3 mb-3" style="width: 18rem;">
+                    <img src="{{obj.favicon}}" style="height:10em" class="card-img-top" alt="...">
+                    <div class="card-body">
+                      <h5 class="card-title text-light">{{obj.name}}</h5>
+                      
+                    </div>
+                    <div class="card-footer">
+                        <a class="btn btn-success rounded"  id="radio_url{{loop.index}}" onclick="radio(this.id, event)" data-value = "{{obj.url_resolved}}">
+                            <span class=""> Play</span>
+                        </a>
+                    </div>
+                  </div> 
+            </div>
+            
             {%endfor%}
             {% endif %}
         </div>
@@ -27,6 +29,29 @@
                type="audio/mpeg">
         </audio>
     </div>
-{% endblock main %}
     
+{% endblock main %}
+
+
+{% block js %}
+    <script>
+        function radio(element, event){
+    event.preventDefault()
+    var radio_url = document.getElementById(element)
+    console.log(element)
+    radio_url.getElementsByTagName('span').innerText = "Playing"
+    var radio = document.getElementById('radio')
+    
+    var radio_source = document.getElementById('audio-source')
+    radio_source.src = radio_url.getAttribute('data-value')
+    
+    radio.volume = 0.06
+    radio.pause()
+    radio.load()
+    radio.play()
+    
+    return element
+}
+    </script>
+{% endblock js %}
     
