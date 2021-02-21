@@ -46,3 +46,9 @@ body{
 .radio{
     position: absolute
 }
+.material-icons{
+    display: inline-flex;
+    vertical-align: bottom;
+}
+
+

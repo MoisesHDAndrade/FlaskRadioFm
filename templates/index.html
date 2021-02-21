@@ -1,57 +1,180 @@
 {% extends 'base.html' %}
+{% block css %}
+    <style>
+   #bars {
+    height: 30px;
+    left: 50%;
+    margin: -20px 0 0 -20px;
+    position: relative;
+    top: 50%;
+    width: 40px;
+}
+
+.bar {
+   background: rgb(255, 255, 255);
+    bottom: 1px;
+    height: 3px;
+    position: absolute;
+    width: 3px;      
+    animation: sound 0ms -800ms linear infinite alternate;
+}
+
+@keyframes sound {
+    0% {
+       opacity: .35;
+        height: 3px; 
+    }
+    100% {
+        opacity: 1;       
+        height: 15px;        
+    }
+}
+
+.bar:nth-child(1)  { left: 1px; animation-duration: 474ms; }
+.bar:nth-child(2)  { left: 5px; animation-duration: 433ms; }
+.bar:nth-child(3)  { left: 9px; animation-duration: 407ms; }
+.bar:nth-child(4)  { left: 13px; animation-duration: 458ms; }
+.bar:nth-child(5)  { left: 17px; animation-duration: 400ms; }
+.bar:nth-child(6)  { left: 21px; animation-duration: 427ms; }
+.bar:nth-child(7)  { left: 25px; animation-duration: 441ms; }
+.bar:nth-child(8)  { left: 29px; animation-duration: 419ms; }
+.bar:nth-child(9)  { left: 33px; animation-duration: 487ms; }
+.bar:nth-child(10) { left: 37px; animation-duration: 442ms; }
+
+ audio{
+    width: 100%;
+    height: 4em;
+    border-color: white ;
+    padding-bottom:3px;
+    margin-right: 1px;
+}
+#title{
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+}
+</style>
+{% endblock css %}
 {% block main %}
-    <div class="col-12">
+<div class="row justify-content-center mt-3">
+    {% if not res %}
+        <div class="col-12">
+            <div class="row justify-content-center">
+                <div class="col-8">
+                    <div class="card text-center">
+                        <div class="card-body">
+                            <p class="card-title">Teste</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+    <div class="col-12 text-center">
         <div class="row justify-content-center">
             {% if res %}
             {%for obj in res%}
-            <div class="col-md-2 col-lg-3 text-center mb-5">
-                <div class="card bg-dark border-bottom-info shadow  py-2 mr-3 mb-3" style="width: 18rem;">
-                    <img src="{{obj.favicon}}" style="height:10em" class="card-img-top" alt="...">
-                    <div class="card-body">
-                      <h5 class="card-title text-light">{{obj.name}}</h5>
-                      
+            <div class="col-lg-2 col-md-6 mb-5">
+                <div class="card bg-dark border-bottom-info shadow  py-2 mr-3 mb-3" >
+                    <div class="row justify-content-center">
+                        <img src="{{obj.favicon}}" style="height:9em; width:12em" class="" alt="...">
+                    </div>
+                    <div class="card-body text-center">
+                      <h5 class="card-title text-light mb-3">{{obj.name}}</h5>
+                      <div class="col-12 text-center ">
+                            <div id="bars" class="bars{{loop.index}} bars" style="display:none">
+                                <div class="bar"></div>
+                                <div class="bar"></div>
+                                <div class="bar"></div>
+                                <div class="bar"></div>
+                                <div class="bar"></div>
+                                <div class="bar"></div>
+                                <div class="bar"></div>
+                                <div class="bar"></div>
+                                <div class="bar"></div>
+                                <div class="bar"></div>
+                            </div>
+                      </div>
                     </div>
                     <div class="card-footer">
-                        <a class="btn btn-success rounded"  id="radio_url{{loop.index}}" onclick="radio(this.id, event)" data-value = "{{obj.url_resolved}}">
-                            <span class=""> Play</span>
+                        <a class="btn btn-success rounded play"  id="radio_url{{loop.index}}" onclick="radio(this.id, event, '{{loop.index}}')" data-value = "{{obj.url_resolved}}">
+                            <span class=""><!--<i class="material-icons" style=" display: inline-flex;vertical-align: bottom;">play_arrow</i>--> Play</span>
                         </a>
                     </div>
                   </div> 
-            </div>
-            
+            </div> 
             {%endfor%}
             {% endif %}
         </div>
     </div>
-    <div class="footer col-xl text-center">
-        <audio id="radio" style="width: 100%;"  controls >
-            <source id="audio-source"
-               type="audio/mpeg">
-        </audio>
+</div>
+    {% if res %}
+    <div class="footer m-0 p-0 bg-dark" >
+        <div class="col-12 text-center mb-1">
+            <div class="row justify-content-center">
+                <div class="col-3 text-center">
+                    <div class="col-12">
+                        <div class="row justify-content-center">
+                            <div class="col-lg-4 col-md-12">
+                                <img src="" alt="" id="cover"  style="width:4.5em;">
+                            </div>
+                            <div class="col-lg-8 col-md-12 position-relative m-0">
+                                <p id="title" class="text-white text-center" ></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-9  pr-2">
+                    <audio id="radio"  controls >
+                        <source id="audio-source"
+                           type="audio/mpeg">
+                    </audio>
+                </div>
+            </div>
+        </div>
+        
+       
     </div>
-    
+    {% endif %}
 {% endblock main %}
-
-
 {% block js %}
-    <script>
-        function radio(element, event){
-    event.preventDefault()
-    var radio_url = document.getElementById(element)
-    console.log(element)
-    radio_url.getElementsByTagName('span').innerText = "Playing"
-    var radio = document.getElementById('radio')
-    
-    var radio_source = document.getElementById('audio-source')
-    radio_source.src = radio_url.getAttribute('data-value')
-    
-    radio.volume = 0.06
-    radio.pause()
-    radio.load()
-    radio.play()
-    
-    return element
-}
-    </script>
+<script>
+    function radio(element, event,index){
+        event.preventDefault()
+        var radio_url = document.getElementById(element)
+        var play_buttons = document.getElementsByClassName("play")
+        var bars = document.getElementsByClassName(`bars${index}`)
+        var bar = document.getElementsByClassName("bars")
+        var card = document.getElementsByClassName("card")
+        var title = card[index-1].children[1].children[0].innerText
+        var image = card[index-1].children[0].children[0].src
+        var cover = document.getElementById("cover")
+        var radio_name = document.getElementById("title")
+        var counter = 0
+        for(item of play_buttons){
+            bar[counter].style.display = "none"
+            card[counter].style.border = "none"
+            item.innerText = "Play"
+            
+            counter ++    
+        }
+        radio_url.innerText = "Playing"
+        card[index-1].style.border = "5px solid white"
+        bars[0].style.display = "block"
+        var radio = document.getElementById('radio')
+        radio_name.innerText = title
+        var radio_source = document.getElementById('audio-source')
+        radio_source.src = radio_url.getAttribute('data-value')
+
+        cover.src = image
+        radio.volume = 0.06
+        radio.pause()
+        radio.load()
+        radio.play()
+        return element
+    }
+</script>
 {% endblock js %}
     
