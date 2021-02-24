@@ -55,6 +55,9 @@
   -ms-transform: translateY(-50%);
   transform: translateY(-50%);
 }
+#radio{
+    height: 100%;
+}
 </style>
 {% endblock css %}
 {% block main %}
@@ -126,7 +129,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-9  pr-2">
+                <div class="col-9 radio-wrapper amplitude-radio pr-2">
                     <audio id="radio"  controls >
                         <source id="audio-source"
                            type="audio/mpeg">
@@ -138,9 +141,15 @@
        
     </div>
     {% endif %}
+
 {% endblock main %}
 {% block js %}
 <script>
+   new GreenAudioPlayer('.radio-wrapper');
+   GreenAudioPlayer.init({
+    selector: '#radio', // inits Green Audio Player on each audio container that has class "player"
+    stopOthersOnPlay: true
+});
     function radio(element, event,index){
         event.preventDefault()
         var radio_url = document.getElementById(element)
@@ -173,6 +182,9 @@
         radio.pause()
         radio.load()
         radio.play()
+       
+            
+        console.log(sound)
         return element
     }
 </script>
