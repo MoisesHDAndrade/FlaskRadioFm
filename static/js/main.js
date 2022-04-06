@@ -48,6 +48,7 @@ var BASE_URL = "//localhost:5000"
                         this.currentRadioImage = radio.favicon
                         this.currentRadioName = radio.name
                         this.playingIndex = index
+                        document.title = `FlaskRadio | ${this.currentRadioName}`
                         // console.log(event.target.parentNode.parentNode.parentNode.parentNode)
                     },
 
