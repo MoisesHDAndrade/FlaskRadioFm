@@ -1,192 +1,207 @@
-{% extends 'base.html' %}
-{% block css %}
-    <style>
-   #bars {
-    height: 30px;
-    left: 50%;
-    margin: -20px 0 0 -20px;
-    position: relative;
-    top: 50%;
-    width: 40px;
-}
 
-.bar {
-   background: rgb(255, 255, 255);
-    bottom: 1px;
-    height: 3px;
-    position: absolute;
-    width: 3px;      
-    animation: sound 0ms -800ms linear infinite alternate;
-}
+<!DOCTYPE html>
 
-@keyframes sound {
-    0% {
-       opacity: .35;
-        height: 3px; 
-    }
-    100% {
-        opacity: 1;       
-        height: 15px;        
-    }
-}
-
-.bar:nth-child(1)  { left: 1px; animation-duration: 474ms; }
-.bar:nth-child(2)  { left: 5px; animation-duration: 433ms; }
-.bar:nth-child(3)  { left: 9px; animation-duration: 407ms; }
-.bar:nth-child(4)  { left: 13px; animation-duration: 458ms; }
-.bar:nth-child(5)  { left: 17px; animation-duration: 400ms; }
-.bar:nth-child(6)  { left: 21px; animation-duration: 427ms; }
-.bar:nth-child(7)  { left: 25px; animation-duration: 441ms; }
-.bar:nth-child(8)  { left: 29px; animation-duration: 419ms; }
-.bar:nth-child(9)  { left: 33px; animation-duration: 487ms; }
-.bar:nth-child(10) { left: 37px; animation-duration: 442ms; }
-
- audio{
-    width: 100%;
-    height: 4em;
-    border-color: white ;
-    padding-bottom:3px;
-    margin-right: 1px;
-}
-#title{
-  margin: 0;
-  position: absolute;
-  top: 50%;
-  -ms-transform: translateY(-50%);
-  transform: translateY(-50%);
-}
-#radio{
-    height: 100%;
-}
-</style>
-{% endblock css %}
-{% block main %}
-<div class="row justify-content-center mt-3">
-    {% if not res %}
-        <div class="col-12">
-            <div class="row justify-content-center">
-                <div class="col-8">
-                    <div class="card text-center">
-                        <div class="card-body">
-                            <p class="card-title">Teste</p>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Radio</title>
+        <meta name="description" content="Music, Radio, Bootstrap">
+        <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,minimal-ui">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-status-barstyle" content="black-translucent">
+        <link rel="apple-touch-icon" href="images/logo.png">
+        <meta name="apple-mobile-web-app-title" content="Flatkit">
+        <meta name="mobile-web-app-capable" content="yes">
+        <link rel="shortcut icon" sizes="196x196" href="images/logo.png">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" integrity="sha512-c42qTSw/wPZ3/5LBzD+Bw5f7bSF2oxou6wEb+I/lqeaKV5FDIfMvvRp772y4jcJLKuGUOpbJMdg/BTl50fJYAw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.1.0/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+        
+        <link rel="stylesheet" href="{{url_for('static', filename='css/style.css')}}" >
+    </head>
+    <body style="background-color: #13192c;">
+        <div class="container-fluid" id="app">
+            <div id="content" class="row" role="main">
+                
+                <div class="app-body" id="view">
+                    <div class="page-content">
+                        <div class="row mb-5">
+                            <div class="col-lg-12">
+                                <div class="padding">
+                                    <!-- HEADER -->
+                                    <div class="page-title m-b">
+                                        <h1 class="inline m-5"> <span class="text-danger">Flask</span> Radio <span class="bi bi-music-player mx-2" style=""></span></h1>
+                                        <div class="search_radio my-3">
+                                            <span class="fa fa-search" @click="getRadios()"></span>
+                                            <input type="text" class="search-input" v-model="search" @keyup.enter="getRadios()">
+                                        </div> 
+                                    </div>
+                                    <!-- END HEADER -->
+                                        <div class="row">
+                                            <!-- RADIO LIST -->
+                                            <div class="col-xs-4 col-sm-4 col-md-3 my-3" :class="`${playingIndex == index? 'shadow p-3':''}`" v-for="(radio, index) in radios" v-if="radios" :style="`${playingIndex == index? 'border:5px solid white; border-radius: 10px; transition: 1s ease all' : 'border:none; transition: 1s ease all'}`">
+                                                <div class="card bg-transparent" :style="{ 'background-image': 'url(' + radio.favicon + ')' }" style="background-size: cover; height: 20em;">
+                                                    <div class="card-body">
+                                                        <div class="d-flex justify-content-center align-items-center h-100">
+                                                            <button class=" btn-playpause btn-main text-center shadow-none " @click="playRadio(index, radio,$event)" v-if="playingIndex != index" >
+                                                                <i class="bi bi-play fs-3 text-center"></i>
+                                                            </button>
+                                                            <!-- <a class="btn-playpause text-primary" @click="playRadio(index, radio,$event)" v-if="playingIndex != index">
+                                                                <i class="bi bi-play-circle text-primary"></i>
+                                                            </a> -->
+                                                            <p class="bg-dark rounded-pill text-white w-100 text-center p-3" v-if="playingIndex == index">Now Playing</p> 
+                                                        </div>
+                                                       
+                                                    </div>
+                                                    <div class="card-footer text-center" style="background-color:  #343a4083 ;">
+                                                        <div class="text-white">
+                                                            <a :href="radio.homepage" v-text="radio.name" class="text-white text-decoration-none fs-5"></a>
+                                                        </div>
+                                                        <div class="">
+                                                            <!-- <p href="" v-text="`${radio.tags}`" class="text-muted"></p> -->
+                                                        </div>
+                                                    </div>
+                                                  
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="text-center">
+                                            <!-- <a href="" class="btn btn-sm rounded bg-light" @click.prevent="getRadios()">Show More</a> -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                           
                         </div>
                     </div>
-                </div>
-            </div>
-        </div>
-    {% endif %}
-    <div class="col-12 text-center">
-        <div class="row justify-content-center">
-            {% if res %}
-            {%for obj in res%}
-            <div class="col-lg-2 col-md-6 mb-5">
-                <div class="card bg-dark border-bottom-info shadow  py-2 mr-3 mb-3" >
-                    <div class="row justify-content-center">
-                        <img src="{{obj.favicon}}" style="height:9em; width:12em" class="" alt="...">
-                    </div>
-                    <div class="card-body text-center">
-                      <h5 class="card-title text-light mb-3">{{obj.name}}</h5>
-                      <div class="col-12 text-center ">
-                            <div id="bars" class="bars{{loop.index}} bars" style="display:none">
-                                <div class="bar"></div>
-                                <div class="bar"></div>
-                                <div class="bar"></div>
-                                <div class="bar"></div>
-                                <div class="bar"></div>
-                                <div class="bar"></div>
-                                <div class="bar"></div>
-                                <div class="bar"></div>
-                                <div class="bar"></div>
-                                <div class="bar"></div>
-                            </div>
-                      </div>
-                    </div>
-                    <div class="card-footer">
-                        <a class="btn btn-success rounded play"  id="radio_url{{loop.index}}" onclick="radio(this.id, event, '{{loop.index}}')" data-value = "{{obj.url_resolved}}">
-                            <span class=""><!--<i class="material-icons" style=" display: inline-flex;vertical-align: bottom;">play_arrow</i>--> Play</span>
+                <!-- FOOTER -->
+                <div class="footer fixed-bottom d-flex align-items-center justify-content-between bg-dark" v-if="radios.length > 0" style="min-height:3em" >
+                    <div class="d-flex justify-content-center align-items-center ">
+                        <img :src="currentRadioImage" v-if="currentRadioImage" alt="" style="width: 3em;height: 3em; margin: 0px; padding: 0px;filter: blur(1px) grayscale(0.5);" >
+                        <a href="" @click.prevent="pauseRadio" class="position-absolute ">
+                            <i class="bi bi-play-circle fs-4 rounded-circle text-white" v-if="!playing"></i>
+                            <i class="bi bi-pause-circle fs-4 rounded-circle text-white " v-else></i>  
                         </a>
                     </div>
-                  </div> 
-            </div> 
-            {%endfor%}
-            {% endif %}
-        </div>
-    </div>
-</div>
-    {% if res %}
-    <div class="footer m-0 p-0 bg-dark" >
-        <div class="col-12 text-center mb-1">
-            <div class="row justify-content-center">
-                <div class="col-3 text-center">
-                    <div class="col-12">
-                        <div class="row justify-content-center">
-                            <div class="col-lg-4 col-md-12">
-                                <img src="" alt="" id="cover"  style="width:4.5em;">
+                   
+                    <div class="playlist " style="padding: 0;">
+                        
+                        <div class="radio-footer-details ">
+                            <span class="title fs-6"  v-text="currentRadioName" v-if="currentRadioName"></span>
+                            <div id="bars" class="bars text-center mb-2" v-if="playing">
+                                <div class="bar"></div>
+                                <div class="bar"></div>
+                                <div class="bar"></div>
+                                <div class="bar"></div>
+                                <div class="bar"></div>
+                                <div class="bar"></div>
+                                <div class="bar"></div>
+                                <div class="bar"></div>
+                                <div class="bar"></div>
+                                <div class="bar"></div>
                             </div>
-                            <div class="col-lg-8 col-md-12 position-relative m-0">
-                                <p id="title" class="text-white text-center" ></p>
-                            </div>
+                            <!-- <span class="subtitle">subtitle</span> -->
                         </div>
                     </div>
+                    
+                    <div class="volume-range float-end">
+                        <span class="text-white" :class="`${volume < 1 ? 'fa fa-volume-mute':'fa fa-volume-up'}`"></span>
+                        <input type="range" min="0" max="100"  class="" id="formControlRange" v-model="volume">
+                    </div>
+                    
                 </div>
-                <div class="col-9 radio-wrapper amplitude-radio pr-2">
-                    <audio id="radio"  controls >
-                        <source id="audio-source"
-                           type="audio/mpeg">
-                    </audio>
-                </div>
+                <!-- END FOOTER -->
+                    <audio src="" hidden id="player" controls></audio>
             </div>
         </div>
-        
-       
-    </div>
-    {% endif %}
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.9.2/umd/popper.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.1.0/js/bootstrap.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.22.0/axios.min.js" integrity="sha512-m2ssMAtdCEYGWXQ8hXVG4Q39uKYtbfaJL5QMTbhl2kc6vYyubrKHhr6aLLXW4ITeXSywQLn1AhsAaqrJl8Acfg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+        <script>
+            var BASE_URL = "//localhost:5000"
+            var vue = new Vue({
+                el: '#app',
+                delimiters: ["[[","]]"],
+                data:{
+                    radios:[],
+                    search:'',
+                    volume: 50,
+                    playing: false,
+                    currentRadioImage: '',
+                    currentRadioName: '',
+                    playingIndex: null,
 
-{% endblock main %}
-{% block js %}
-<script>
-   new GreenAudioPlayer('.radio-wrapper');
-   GreenAudioPlayer.init({
-    selector: '#radio', // inits Green Audio Player on each audio container that has class "player"
-    stopOthersOnPlay: true
-});
-    function radio(element, event,index){
-        event.preventDefault()
-        var radio_url = document.getElementById(element)
-        var play_buttons = document.getElementsByClassName("play")
-        var bars = document.getElementsByClassName(`bars${index}`)
-        var bar = document.getElementsByClassName("bars")
-        var card = document.getElementsByClassName("card")
-        var title = card[index-1].children[1].children[0].innerText
-        var image = card[index-1].children[0].children[0].src
-        var cover = document.getElementById("cover")
-        var radio_name = document.getElementById("title")
-        var counter = 0
-        for(item of play_buttons){
-            bar[counter].style.display = "none"
-            card[counter].style.border = "none"
-            item.innerText = "Play"
-            
-            counter ++    
-        }
-        radio_url.innerText = "Playing"
-        card[index-1].style.border = "5px solid white"
-        bars[0].style.display = "block"
-        var radio = document.getElementById('radio')
-        radio_name.innerText = title
-        var radio_source = document.getElementById('audio-source')
-        radio_source.src = radio_url.getAttribute('data-value')
+                },
+                methods:{
+                    getRadios(){
+                        axios.post(`${BASE_URL}/api`, {
+                            "search": this.search
+                        }, this.newHeaders()).then(response =>{
+                            this.radios = response.data
+                            console.log(response.data)
+                        })
+                    },
+                    pauseRadio(){
+                        if(this.playing){
+                            this.playing = false
+                            document.getElementById('player').pause()
+                        }
+                        else{
+                            this.playing = true
+                            document.getElementById('player').play()
+                        }
+                        
+                    
+                    },
+                    playRadio(index, radio, event){
+                        var audio = document.getElementById('player');
+                        var vol = document.getElementById("formControlRange")
+                        audio.src = ""
+                        audio.src = radio.url_resolved
+                        this.playing = true
+                        audio.volume = vol.value/100
+                        
+                        vol.addEventListener("change", function(){
+                            audio.volume = vol.value/100
+                        })
+                        audio.play()
+                        this.currentRadioImage = radio.favicon
+                        this.currentRadioName = radio.name
+                        this.playingIndex = index
+                        // console.log(event.target.parentNode.parentNode.parentNode.parentNode)
+                    },
 
-        cover.src = image
-        radio.volume = 0.06
-        radio.pause()
-        radio.load()
-        radio.play()
-       
+                    getCookie(name) {
+                        var cookieValue = null;
+                        if (document.cookie && document.cookie !== '') {
+                            var cookies = document.cookie.split(';');
+                            for (var i = 0; i < cookies.length; i++) {
+                                var cookie = cookies[i].trim();
+                                // Does this cookie string begin with the name we want?
+                                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                                    break;
+                                }
+                            }
+                        }
+                        return cookieValue;
+                    },
+
+                    newHeaders(){
+                        axios.defaults.xsrfHeaderName = "X-CSRFToken";
+                        const csrftoken = this.getCookie('csrftoken');
+                        const headers = {"X-CSRFTOKEN": csrftoken}
+                        return headers
+                    },
+                }
+            })
+        </script>
+        {% block js %}{% endblock js %}
             
-        console.log(sound)
-        return element
-    }
-</script>
-{% endblock js %}
-    
+    </body>
