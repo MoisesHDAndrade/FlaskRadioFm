@@ -1,6 +1,4 @@
-
 <!DOCTYPE html>
-
 <html lang="en">
     <head>
         <meta charset="utf-8">
@@ -21,13 +19,11 @@
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.1.0/css/bootstrap.min.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-        
         <link rel="stylesheet" href="{{url_for('static', filename='css/style.css')}}" >
     </head>
     <body style="background-color: #13192c;">
         <div class="container-fluid" id="app">
-            <div id="content" class="row" role="main">
-                
+            <div id="content" class="row" role="main">  
                 <div class="app-body" id="view">
                     <div class="page-content">
                         <div class="row mb-5">
@@ -76,7 +72,6 @@
                                     </div>
                                 </div>
                             </div>
-                           
                         </div>
                     </div>
                 <!-- FOOTER -->
@@ -88,9 +83,7 @@
                             <i class="bi bi-pause-circle fs-4 rounded-circle text-white " v-else></i>  
                         </a>
                     </div>
-                   
                     <div class="playlist " style="padding: 0;">
-                        
                         <div class="radio-footer-details ">
                             <span class="title fs-6"  v-text="currentRadioName" v-if="currentRadioName"></span>
                             <div id="bars" class="bars text-center mb-2" v-if="playing">
@@ -108,12 +101,10 @@
                             <!-- <span class="subtitle">subtitle</span> -->
                         </div>
                     </div>
-                    
                     <div class="volume-range float-end">
                         <span class="text-white" :class="`${volume < 1 ? 'fa fa-volume-mute':'fa fa-volume-up'}`"></span>
                         <input type="range" min="0" max="100"  class="" id="formControlRange" v-model="volume">
                     </div>
-                    
                 </div>
                 <!-- END FOOTER -->
                     <audio src="" hidden id="player" controls></audio>
@@ -123,85 +114,5 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.1.0/js/bootstrap.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.22.0/axios.min.js" integrity="sha512-m2ssMAtdCEYGWXQ8hXVG4Q39uKYtbfaJL5QMTbhl2kc6vYyubrKHhr6aLLXW4ITeXSywQLn1AhsAaqrJl8Acfg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
         <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
-        <script>
-            var BASE_URL = "//localhost:5000"
-            var vue = new Vue({
-                el: '#app',
-                delimiters: ["[[","]]"],
-                data:{
-                    radios:[],
-                    search:'',
-                    volume: 50,
-                    playing: false,
-                    currentRadioImage: '',
-                    currentRadioName: '',
-                    playingIndex: null,
-
-                },
-                methods:{
-                    getRadios(){
-                        axios.post(`${BASE_URL}/api`, {
-                            "search": this.search
-                        }, this.newHeaders()).then(response =>{
-                            this.radios = response.data
-                            console.log(response.data)
-                        })
-                    },
-                    pauseRadio(){
-                        if(this.playing){
-                            this.playing = false
-                            document.getElementById('player').pause()
-                        }
-                        else{
-                            this.playing = true
-                            document.getElementById('player').play()
-                        }
-                        
-                    
-                    },
-                    playRadio(index, radio, event){
-                        var audio = document.getElementById('player');
-                        var vol = document.getElementById("formControlRange")
-                        audio.src = ""
-                        audio.src = radio.url_resolved
-                        this.playing = true
-                        audio.volume = vol.value/100
-                        
-                        vol.addEventListener("change", function(){
-                            audio.volume = vol.value/100
-                        })
-                        audio.play()
-                        this.currentRadioImage = radio.favicon
-                        this.currentRadioName = radio.name
-                        this.playingIndex = index
-                        // console.log(event.target.parentNode.parentNode.parentNode.parentNode)
-                    },
-
-                    getCookie(name) {
-                        var cookieValue = null;
-                        if (document.cookie && document.cookie !== '') {
-                            var cookies = document.cookie.split(';');
-                            for (var i = 0; i < cookies.length; i++) {
-                                var cookie = cookies[i].trim();
-                                // Does this cookie string begin with the name we want?
-                                if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                                    break;
-                                }
-                            }
-                        }
-                        return cookieValue;
-                    },
-
-                    newHeaders(){
-                        axios.defaults.xsrfHeaderName = "X-CSRFToken";
-                        const csrftoken = this.getCookie('csrftoken');
-                        const headers = {"X-CSRFTOKEN": csrftoken}
-                        return headers
-                    },
-                }
-            })
-        </script>
-        {% block js %}{% endblock js %}
-            
+        <script src="{{url_for('static', filename='js/main.js')}}"></script>  
     </body>
