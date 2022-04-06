@@ -5,7 +5,8 @@ var BASE_URL = "//localhost:5000"
                 data:{
                     radios:[],
                     search:'',
-                    volume: 50,
+                    volume: 30,
+                    lastVolume: 0,
                     playing: false,
                     currentRadioImage: '',
                     currentRadioName: '',
@@ -41,15 +42,32 @@ var BASE_URL = "//localhost:5000"
                         this.playing = true
                         audio.volume = vol.value/100
                         
-                        vol.addEventListener("change", function(){
-                            audio.volume = vol.value/100
-                        })
+                        // vol.addEventListener("change", function(){
+                        //     audio.volume = vol.value/100
+                        // })
                         audio.play()
                         this.currentRadioImage = radio.favicon
                         this.currentRadioName = radio.name
                         this.playingIndex = index
                         document.title = `FlaskRadio | ${this.currentRadioName}`
                         // console.log(event.target.parentNode.parentNode.parentNode.parentNode)
+                    },
+                    changeVolume(){
+                        let audio = document.getElementById('player');
+                        audio.volume  = this.volume/100
+                    },
+                    muteVolume(){
+                        let audio = document.getElementById('player');
+                        
+                        if(this.volume > 0){
+                            this.lastVolume = this.volume
+                            this.volume = 0
+                            audio.volume  = this.volume/100
+                        }
+                        else{
+                            this.volume = this.lastVolume
+                            audio.volume = this.volume/100
+                        }
                     },
 
                     getCookie(name) {
