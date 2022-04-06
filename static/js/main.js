@@ -18,7 +18,7 @@ var BASE_URL = "//localhost:5000"
                             "search": this.search
                         }, this.newHeaders()).then(response =>{
                             this.radios = response.data
-                            console.log(response.data)
+                            
                         })
                     },
                     pauseRadio(){
