@@ -83,27 +83,27 @@
                             <i class="bi bi-pause-circle fs-4 rounded-circle text-white " v-else></i>  
                         </a>
                     </div>
-                    <div class="playlist " style="padding: 0;">
-                        <div class="radio-footer-details ">
-                            <span class="title fs-6"  v-text="currentRadioName" v-if="currentRadioName"></span>
-                            <div id="bars" class="bars text-center mb-2" v-if="playing">
-                                <div class="bar"></div>
-                                <div class="bar"></div>
-                                <div class="bar"></div>
-                                <div class="bar"></div>
-                                <div class="bar"></div>
-                                <div class="bar"></div>
-                                <div class="bar"></div>
-                                <div class="bar"></div>
-                                <div class="bar"></div>
-                                <div class="bar"></div>
-                            </div>
+                    <div class="playlist justify-content-center" style="padding: 0;">
+                        <div class="radio-footer-details">
+                            <span class="title fs-6 text-center"  v-text="currentRadioName" v-if="currentRadioName"></span>
+                                <div id="bars" class="bars mb-2" v-if="playing">
+                                    <div class="bar"></div>
+                                    <div class="bar"></div>
+                                    <div class="bar"></div>
+                                    <div class="bar"></div>
+                                    <div class="bar"></div>
+                                    <div class="bar"></div>
+                                    <div class="bar"></div>
+                                    <div class="bar"></div>
+                                    <div class="bar"></div>
+                                    <div class="bar"></div>
+                                </div>
                             <!-- <span class="subtitle">subtitle</span> -->
                         </div>
                     </div>
                     <div class="volume-range float-end">
-                        <span class="text-white" :class="`${volume < 1 ? 'fa fa-volume-mute':'fa fa-volume-up'}`"></span>
-                        <input type="range" min="0" max="100"  class="" id="formControlRange" v-model="volume">
+                        <span class="text-white" :class="`${volume < 1 ? 'fa fa-volume-mute':'fa fa-volume-up'}`" @click="muteVolume"></span>
+                        <input type="range" min="0" max="100" class="" id="formControlRange" v-model="volume" @change="changeVolume">
                     </div>
                 </div>
                 <!-- END FOOTER -->
