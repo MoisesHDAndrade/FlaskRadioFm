@@ -41,7 +41,7 @@
                                         <div class="row">
                                             <!-- RADIO LIST -->
                                             <div class="col-xs-4 col-sm-4 col-md-3 my-3" :class="`${playingIndex == index? 'shadow p-3':''}`" v-for="(radio, index) in radios" v-if="radios" :style="`${playingIndex == index? 'border:5px solid white; border-radius: 10px; transition: 1s ease all' : 'border:none; transition: 1s ease all'}`">
-                                                <div class="card bg-transparent" :style="{ 'background-image': 'url(' + radio.favicon + ')' }" style="background-size: cover; height: 20em;">
+                                                <div class="card bg-transparent" :style="{ 'background-image': 'url(' + `${radio.favicon ? radio.favicon:noImage}` + ')' }" style="background-size: cover; height: 20em;">
                                                     <div class="card-body">
                                                         <div class="d-flex justify-content-center align-items-center h-100">
                                                             <button class=" btn-playpause btn-main text-center shadow-none " @click="playRadio(index, radio,$event)" v-if="playingIndex != index" >
