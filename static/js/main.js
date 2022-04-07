@@ -11,9 +11,18 @@ var BASE_URL = "//localhost:5000"
                     currentRadioImage: '',
                     currentRadioName: '',
                     playingIndex: null,
+                    noImage : ''
 
                 },
                 methods:{
+                    returnNoImage(){
+                        axios.get(`https://source.unsplash.com/600x400/?radio`).then(
+                            response =>{
+                                this.noImage = response.request.responseURL
+                            }
+                        )
+                       
+                    },
                     getRadios(){
                         axios.post(`${BASE_URL}/api`, {
                             "search": this.search
@@ -92,5 +101,8 @@ var BASE_URL = "//localhost:5000"
                         const headers = {"X-CSRFTOKEN": csrftoken}
                         return headers
                     },
+                },
+                mounted(){
+                    this.returnNoImage()
                 }
             })
