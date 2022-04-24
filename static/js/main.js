@@ -24,11 +24,21 @@ var BASE_URL = "//localhost:5000"
                        
                     },
                     getRadios(){
+                        if(!this.search){
+                            this.getMostPlayed()
+                            return
+                        }
                         axios.post(`${BASE_URL}/api`, {
                             "search": this.search
-                        }, this.newHeaders()).then(response =>{
+                        }).then(response =>{
                             this.radios = response.data
                             
+                        })
+                    },
+                    getMostPlayed(){
+                        axios.get(`https://nl1.api.radio-browser.info/json/stations/search?limit=12&hidebroken=true&has_extended_info=true&order=clickcount&reverse=true`)
+                        .then(response =>{
+                            this.radios = response.data
                         })
                     },
                     pauseRadio(){
@@ -79,30 +89,10 @@ var BASE_URL = "//localhost:5000"
                         }
                     },
 
-                    getCookie(name) {
-                        var cookieValue = null;
-                        if (document.cookie && document.cookie !== '') {
-                            var cookies = document.cookie.split(';');
-                            for (var i = 0; i < cookies.length; i++) {
-                                var cookie = cookies[i].trim();
-                                // Does this cookie string begin with the name we want?
-                                if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                                    break;
-                                }
-                            }
-                        }
-                        return cookieValue;
-                    },
-
-                    newHeaders(){
-                        axios.defaults.xsrfHeaderName = "X-CSRFToken";
-                        const csrftoken = this.getCookie('csrftoken');
-                        const headers = {"X-CSRFTOKEN": csrftoken}
-                        return headers
-                    },
+                   
                 },
                 mounted(){
+                    this.getMostPlayed()
                     this.returnNoImage()
                 }
             })
