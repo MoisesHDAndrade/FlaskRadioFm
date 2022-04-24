@@ -1,3 +1,4 @@
+from audioop import reverse
 from pyradios import RadioBrowser
 from flask import Flask, render_template, request, jsonify
 import json
@@ -6,8 +7,9 @@ app = Flask(__name__)
 rb = RadioBrowser()
 
 def radio_search(search):
-    radio = rb.search(name=search, name_exact = False)
-    return radio
+    if search:
+        radio = rb.search(name=search, name_exact = False)
+        return radio
 
 @app.route('/api',methods=['POST','GET'])
 def get_radio_api():
